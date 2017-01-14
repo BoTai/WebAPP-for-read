@@ -260,6 +260,13 @@
 			vertical-align: -14px;
 			margin-left: 10px;
 		}
+		.artical-action-mid {
+			position: fixed;
+			z-index: 10002;
+			width: 100%;
+			height: 40%;
+			top: 30%;
+		}
 		</style>
 	</head>
 	<body>
@@ -267,7 +274,7 @@
 			<!--隐藏层-->
 			<div class="m-artical-action">
 				<!--中间-->
-				<div class="artical-action-mid"></div>
+				<div class="artical-action-mid" id="action_mid"></div>
 			</div>
 
       <!--上边栏-->
@@ -294,23 +301,23 @@
           </ul>
         </div>
         <!--下边栏-->
-				<div id="foot-nav" class="foot-nav" style= "display:none">
+				<div class="foot-nav" style= "display:none">
 					<div class="icon-left">
 						<div class="icon-menu"></div>
 		        <div class="nav-menu">目录</div>
 					</div>
-					<div class="icon-middle" style= "display:none">
-						<div class="icon-size"></div>
-						<div class="nav-size">字体</div>
+					<div class="icon-middle">
+						<div class="icon-size font-button"></div>
+						<div class="nav-size font-button">字体</div>
 					</div>
-					<div class="icon-middle-click" >
+					<div class="icon-middle-click" style= "display:none">
 						<div class="icon-size-click"></div>
 						<div class="nav-size">字体</div>
 					</div>
 					<!--字体操作面板-->
 					  <!--操作面板背景-->
-					<div class="nav-pannel-bk"></div>
-					<div class="nav-pannel" id="font-container">
+					<div class="nav-pannel-bk font-container" style= "display:none"></div>
+					<div class="nav-pannel font-container" style= "display:none">
 						<div class="child-mod">
 							<span>字号</span>
 							<button id="large-font" class="font-size-button">大</button>
@@ -342,7 +349,7 @@
 					</div>
 					<div class="icon-right-night" >
 						<div class="icon-night"></div>
-						<div class="nav-night">晚上</div>
+						<div class="nav-night">夜间</div>
 					</div>
 	      </div>
 				<!--下边栏结束-->
@@ -370,8 +377,19 @@
 							StorageSetter:StorageSetter
 						}
 					}) ();
+					var Dom = {
+						top_nav: $('#top-nav'),
+						foot_nav: $('.foot-nav'),
+						night_day_switch_button: $('.icon-right-night'),
+						font_button: $('.font-button'),
+						font_container: $('.font-container')
+					}
+					var Win = $(window);
+					var Doc = $(document);
+
 					function main() {
 						//项目的入口函数
+						EventHanlder();
 					}
 
 					function ReaderModel() {
@@ -383,7 +401,33 @@
 					}
 
 					function EventHanlder() {
-						//交互的实践绑定
+						//交互的事件绑定
+						$('#action_mid').click(function() {
+							if(Dom.top_nav.css('display') == 'none'){
+								Dom.top_nav.show();
+								Dom.foot_nav.show();
+							}else{
+								Dom.top_nav.hide();
+								Dom.foot_nav.hide();
+							}
+						});
+						font_button.click(function() {
+							if(Dom.font_container.css('display') == 'none'){
+								Dom.font_container.show();
+								Dom.font_container.show();
+							}else{
+								Dom.font_container.hide();
+								Dom.font_container.hide();
+							}
+						});
+						night_day_switch_button.click(function() {
+							//  触发背景切换的事件
+						});
+
+						Win.scroll(function() {
+							Dom.top_nav.hide();
+							Dom.foot_nav.hide();
+						});
 					}
 
 					main();
