@@ -275,6 +275,7 @@
 			<div class="m-artical-action">
 				<!--中间-->
 				<div class="artical-action-mid" id="action_mid"></div>
+
 			</div>
 
       <!--上边栏-->
@@ -306,6 +307,7 @@
 						<div class="icon-menu"></div>
 		        <div class="nav-menu">目录</div>
 					</div>
+
 					<div class="icon-middle">
 						<div class="icon-size font-button"></div>
 						<div class="nav-size font-button">字体</div>
@@ -411,7 +413,7 @@
 								Dom.foot_nav.hide();
 							}
 						});
-						font_button.click(function() {
+						Dom.font_button.click(function() {
 							if(Dom.font_container.css('display') == 'none'){
 								Dom.font_container.show();
 								Dom.font_container.show();
@@ -420,7 +422,7 @@
 								Dom.font_container.hide();
 							}
 						});
-						night_day_switch_button.click(function() {
+						Dom.night_day_switch_button.click(function() {
 							//  触发背景切换的事件
 						});
 
