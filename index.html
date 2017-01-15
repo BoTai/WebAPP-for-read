@@ -230,6 +230,16 @@
 			vertical-align: -14px;
 			margin-left: 10px;
 		}
+		.bk-container-current-2 {
+			position: absolute;
+			width: 32px;
+			height: 32px;
+			border-radius: 16px;
+			border: 1px solid #ff7800;
+			display: inline-block;
+			top: -2px;
+			left: -2px;
+		}
 		.bk-container-3 {
 			position: relative;
 			width: 30px;
@@ -239,6 +249,16 @@
 			display: inline-block;
 			vertical-align: -14px;
 			margin-left: 10px;
+		}
+		.bk-container-current-3 {
+			position: absolute;
+			width: 32px;
+			height: 32px;
+			border-radius: 16px;
+			border: 1px solid #ff7800;
+			display: inline-block;
+			top: -2px;
+			left: -2px;
 		}
 		.bk-container-4 {
 			position: relative;
@@ -250,6 +270,16 @@
 			vertical-align: -14px;
 			margin-left: 10px;
 		}
+		.bk-container-current-4 {
+			position: absolute;
+			width: 32px;
+			height: 32px;
+			border-radius: 16px;
+			border: 1px solid #ff7800;
+			display: inline-block;
+			top: -2px;
+			left: -2px;
+		}
 		.bk-container-5 {
 			position: relative;
 			width: 30px;
@@ -259,6 +289,16 @@
 			display: inline-block;
 			vertical-align: -14px;
 			margin-left: 10px;
+		}
+		.bk-container-current-5 {
+			position: absolute;
+			width: 32px;
+			height: 32px;
+			border-radius: 16px;
+			border: 1px solid #ff7800;
+			display: inline-block;
+			top: -2px;
+			left: -2px;
 		}
 		.artical-action-mid {
 			position: fixed;
@@ -329,19 +369,19 @@
 						<div class="child-mod">
 							<span>背景</span>
 							<div class="bk-container-1">
-								<div class="bk-container-current-1"></div>
+								<div class="bk-container-current-1" style="display: none"></div>
 							</div>
 							<div class="bk-container-2">
-								<div class="bk-container-current-2"></div>
+								<div class="bk-container-current-2" style="display: none"></div>
 							</div>
 							<div class="bk-container-3">
-								<div class="bk-container-current-3"></div>
+								<div class="bk-container-current-3" style="display: none"></div>
 							</div>
 							<div class="bk-container-4">
-								<div class="bk-container-current-4"></div>
+								<div class="bk-container-current-4" style="display: none"></div>
 							</div>
 							<div class="bk-container-5">
-								<div class="bk-container-current-5"></div>
+								<div class="bk-container-current-5" style="display: none"></div>
 							</div>
 						</div>
 					</div>
@@ -386,11 +426,46 @@
 						night_day_switch_button: $('.icon-right-night'),
 						font_button: $('.font-button'),
 						font_container: $('.font-container'),
-						icon_middle_click: $('.icon-middle-click')
+						icon_middle_click: $('.icon-middle-click'),
+						large_font: $('#large-font'),
+						small_font: $('#small-font'),
+						m_read_content: $('.m-read-content'),
+						bk_container_1: $('.bk-container-1'),
+						bk_container_2: $('.bk-container-2'),
+						bk_container_3: $('.bk-container-3'),
+						bk_container_4: $('.bk-container-4'),
+						bk_container_5: $('.bk-container-5'),
+						body: $('body'),
+						bk_container_current_1: $('.bk-container-current-1'),
+						bk_container_current_2: $('.bk-container-current-2'),
+						bk_container_current_3: $('.bk-container-current-3'),
+						bk_container_current_4: $('.bk-container-current-4'),
+						bk_container_current_5: $('.bk-container-current-5')
 					}
 					var Win = $(window);
 					var Doc = $(document);
+					var bk_container_current = new Array(
+						"Dom.bk_container_current_1.css('display') == 'none'",
+						"Dom.bk_container_current_2.css('display') == 'none'",
+						"Dom.bk_container_current_3.css('display') == 'none'",
+						"Dom.bk_container_current_4.css('display') == 'none'",
+						"Dom.bk_container_current_5.css('display') == 'none'"
+					);
 
+					//保存上次设置字体的大小
+					var initFontSize = Util.StorageGetter('font_size');
+					initFontSize = parseInt(initFontSize);
+					if(!initFontSize) {
+						initFontSize = 14;
+					}
+					Dom.m_read_content.css('font-size',initFontSize);
+					//存储背景颜色
+					var initBackground =new Array("#fff", "#d5a337", "#4E4858", "#97C99F", "#1E2632", "#e9dfc7");
+					//保存上次设置的背景颜色
+					var newInitBackground = Util.StorageGetter('back_ground');
+
+					Dom.body.css('background', newInitBackground);
+					//主函数
 					function main() {
 						//项目的入口函数
 						EventHanlder();
@@ -434,10 +509,92 @@
 						Dom.night_day_switch_button.click(function() {
 							//  触发背景切换的事件
 						});
+						//字体切换
+						Dom.large_font.click(function() {
+							initFontSize += 1;
+							if(initFontSize > 20) {
+								return;
+							}
+							Dom.m_read_content.css('font-size', initFontSize);
+							Util.StorageSetter('font_size', initFontSize);
+						});
+						Dom.small_font.click(function() {
+							initFontSize -= 1;
+							if(initFontSize < 10) {
+								return;
+							}
+							Dom.m_read_content.css('font-size', initFontSize);
+							Util.StorageSetter('font_size', initFontSize);
+						});
+						//背景颜色切换
+						Dom.bk_container_1.click(function() {
+							Dom.body.css('background', initBackground[0]);
+							newInitBackground =  initBackground[0];
+							Util.StorageSetter('back_ground', newInitBackground);
+							if(bk_container_current[0]) {
+								Dom.bk_container_current_1.show();
+								Dom.bk_container_current_2.hide();
+								Dom.bk_container_current_3.hide();
+								Dom.bk_container_current_4.hide();
+								Dom.bk_container_current_5.hide();
+							}
+						});
+						Dom.bk_container_2.click(function() {
+							Dom.body.css('background', initBackground[1]);
+							newInitBackground =  initBackground[1];
+							Util.StorageSetter('back_ground', newInitBackground);
+							if(bk_container_current[1]) {
+								Dom.bk_container_current_1.hide();
+								Dom.bk_container_current_2.show();
+								Dom.bk_container_current_3.hide();
+								Dom.bk_container_current_4.hide();
+								Dom.bk_container_current_5.hide();
+							}
+						});
+						Dom.bk_container_3.click(function() {
+							Dom.body.css('background', initBackground[2]);
+							newInitBackground =  initBackground[2];
+							Util.StorageSetter('back_ground', newInitBackground);
+							if(bk_container_current[2]) {
+								Dom.bk_container_current_1.hide();
+								Dom.bk_container_current_2.hide();
+								Dom.bk_container_current_3.show();
+								Dom.bk_container_current_4.hide();
+								Dom.bk_container_current_5.hide();
+							}
+						});
+						Dom.bk_container_4.click(function() {
+							Dom.body.css('background', initBackground[3]);
+							newInitBackground =  initBackground[3];
+							Util.StorageSetter('back_ground', newInitBackground);
+							if(bk_container_current[3]) {
+								Dom.bk_container_current_1.hide();
+								Dom.bk_container_current_2.hide();
+								Dom.bk_container_current_3.hide();
+								Dom.bk_container_current_4.show();
+								Dom.bk_container_current_5.hide();
+							}
+						});
+						Dom.bk_container_5.click(function() {
+							Dom.body.css('background', initBackground[4]);
+							newInitBackground =  initBackground[4];
+							Util.StorageSetter('back_ground', newInitBackground);
+							if(bk_container_current[4]) {
+								Dom.bk_container_current_1.hide();
+								Dom.bk_container_current_2.hide();
+								Dom.bk_container_current_3.hide();
+								Dom.bk_container_current_4.hide();
+								Dom.bk_container_current_5.show();
+							}
+						});
 
+						//滑动页面隐藏上下边栏
 						Win.scroll(function() {
 							Dom.top_nav.hide();
 							Dom.foot_nav.hide();
+							Dom.icon_middle_click.hide();
+							Dom.font_container.hide();
+
 						});
 					}
 
