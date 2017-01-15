@@ -349,16 +349,16 @@
 						<div class="icon-menu"></div>
 		        <div class="nav-menu">目录</div>
 					</div>
-
-					<div class="icon-middle">
-						<div class="icon-size font-button"></div>
-						<div class="nav-size">字体</div>
+					<div class="icon-click">
+						<div class="icon-middle">
+							<div class="icon-size font-button"></div>
+							<div class="nav-size">字体</div>
+						</div>
+						<div class="icon-middle-click " style="display:none">
+							<div class="icon-size-click font-button"></div>
+							<div class="nav-size">字体</div>
+						</div>
 					</div>
-					<div class="icon-middle-click " style="display:none">
-						<div class="icon-size-click font-button"></div>
-						<div class="nav-size">字体</div>
-					</div>
-
 					<!--字体操作面板-->
 					  <!--操作面板背景-->
 					<div class="nav-pannel-bk font-container" style= "display:none"></div>
@@ -503,7 +503,7 @@
 							}
 						});
 						//点击字体后颜色切换且显示菜单
-						Dom.font_button.click(function() {
+						$('.icon-click').click(function() {
 							if(Dom.font_container.css('display') == 'none'){
 								Dom.font_container.show();
 								Dom.font_button.addClass('icon-middle-click');
