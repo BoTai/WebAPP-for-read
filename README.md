@@ -9,5 +9,5 @@ HTML5、Vue.js、zepto、Koa框架综合运用开发webApp阅读器
   <li></li>
   <li></li>
 </ul>
-<br/>
+<hr>
 未完待续...
