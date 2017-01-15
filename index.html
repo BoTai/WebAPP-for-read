@@ -442,7 +442,11 @@
 						bk_container_current_4: $('.bk-container-current-4'),
 						bk_container_current_5: $('.bk-container-current-5'),
 						icon_day: $('.icon-day'),
-						icon_night: $('.icon-night')
+						nav_day: $('.nav-day'),
+						icon_night: $('.icon-night'),
+						nav_night: $('.nav-night'),
+						icon_right_day: $('.icon-right-day'),
+						icon_right_night: $('.icon-right-night')
 					}
 					var Win = $(window);
 					var Doc = $(document);
@@ -557,6 +561,10 @@
 							}
 							initCurrent = Dom.bk_container_current_1;
 							Util.StorageSetter('init_current', initCurrent);
+							if(Dom.icon_right_night.css('display') == 'none'){
+								Dom.icon_right_night.show();
+								Dom.icon_right_day.hide();
+							}
 						});
 						Dom.bk_container_2.click(function() {
 							Dom.body.css('background', initBackground[1]);
@@ -571,6 +579,10 @@
 							}
 							initCurrent = Dom.bk_container_current_2.show();
 							Util.StorageSetter('init_current', initCurrent);
+							if(Dom.icon_right_night.css('display') == 'none'){
+								Dom.icon_right_night.show();
+								Dom.icon_right_day.hide();
+							}
 						});
 						Dom.bk_container_3.click(function() {
 							Dom.body.css('background', initBackground[2]);
@@ -585,6 +597,10 @@
 							}
 							initCurrent = Dom.bk_container_current_3.show();
 							Util.StorageSetter('init_current', initCurrent);
+							if(Dom.icon_right_night.css('display') == 'none'){
+								Dom.icon_right_night.show();
+								Dom.icon_right_day.hide();
+							}
 						});
 						Dom.bk_container_4.click(function() {
 							Dom.body.css('background', initBackground[3]);
@@ -599,6 +615,10 @@
 							}
 							initCurrent = Dom.bk_container_current_4.show();
 							Util.StorageSetter('init_current', initCurrent);
+							if(Dom.icon_right_night.css('display') == 'none'){
+								Dom.icon_right_night.show();
+								Dom.icon_right_day.hide();
+							}
 						});
 						Dom.bk_container_5.click(function() {
 							Dom.body.css('background', initBackground[4]);
@@ -613,17 +633,48 @@
 							}
 							initCurrent = Dom.bk_container_current_5.show();
 							Util.StorageSetter('init_current', initCurrent);
+							if(Dom.icon_right_day.css('display') == 'none'){
+								Dom.icon_right_day.show();
+								Dom.icon_right_night.hide();
+							}
 						});
 						//夜间
-						Dom.icon_night.click(function() {
+						Dom.icon_right_night.click(function() {
 							Dom.body.css('background', initBackground[4]);
 							newInitBackground =  initBackground[4];
 							Util.StorageSetter('back_ground', newInitBackground);
-							Dom.icon_night.removeClass('icon-night');
-							Dom.icon_night.addClass('icon-day');
-							if(Dom.icon_day.css('display') == 'none'){
-								icon_day.show();
+							if(Dom.icon_right_day.css('display') == 'none'){
+								Dom.icon_right_day.show();
+								Dom.icon_right_night.hide();
 							}
+							if(bk_container_current[4]) {
+								Dom.bk_container_current_1.hide();
+								Dom.bk_container_current_2.hide();
+								Dom.bk_container_current_3.hide();
+								Dom.bk_container_current_4.hide();
+								Dom.bk_container_current_5.show();
+							}
+							initCurrent = Dom.bk_container_current_5.show();
+							Util.StorageSetter('init_current', initCurrent);
+						});
+						//白天
+						Dom.icon_right_day.click(function() {
+							Dom.body.css('background', initBackground[0]);
+							newInitBackground =  initBackground[0];
+							Util.StorageSetter('back_ground', newInitBackground);
+							if(Dom.icon_right_night.css('display') == 'none'){
+								Dom.icon_right_night.show();
+								Dom.icon_right_day.hide();
+							}
+							if(bk_container_current[0]) {
+								Dom.bk_container_current_1.show();
+								Dom.bk_container_current_2.hide();
+								Dom.bk_container_current_3.hide();
+								Dom.bk_container_current_4.hide();
+								Dom.bk_container_current_5.hide();
+							}
+							initCurrent = Dom.bk_container_current_1.show();
+							Util.StorageSetter('init_current', initCurrent);
 						});
 						//滑动页面隐藏上下边栏
 						Win.scroll(function() {
