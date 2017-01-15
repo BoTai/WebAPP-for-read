@@ -440,7 +440,9 @@
 						bk_container_current_2: $('.bk-container-current-2'),
 						bk_container_current_3: $('.bk-container-current-3'),
 						bk_container_current_4: $('.bk-container-current-4'),
-						bk_container_current_5: $('.bk-container-current-5')
+						bk_container_current_5: $('.bk-container-current-5'),
+						icon_day: $('.icon-day'),
+						icon_night: $('.icon-night')
 					}
 					var Win = $(window);
 					var Doc = $(document);
@@ -463,8 +465,10 @@
 					var initBackground =new Array("#fff", "#d5a337", "#4E4858", "#97C99F", "#1E2632", "#e9dfc7");
 					//保存上次设置的背景颜色
 					var newInitBackground = Util.StorageGetter('back_ground');
-
 					Dom.body.css('background', newInitBackground);
+
+					var initCurrent = Util.StorageGetter('init_current');
+
 					//主函数
 					function main() {
 						//项目的入口函数
@@ -499,6 +503,18 @@
 								if(Dom.icon_middle_click.css('display') == 'none'){
 									Dom.icon_middle_click.show();
 								}
+								//圆圈自动出现
+								if(newInitBackground === initBackground[0]) {
+									Dom.bk_container_current_1.show();
+								}else if(newInitBackground === initBackground[1]) {
+									Dom.bk_container_current_2.show();
+								}else if(newInitBackground === initBackground[2]) {
+									Dom.bk_container_current_3.show();
+								}else if(newInitBackground === initBackground[3]) {
+									Dom.bk_container_current_4.show();
+								}else if(newInitBackground === initBackground[4]) {
+									Dom.bk_container_current_5.show();
+								}
 							}else{
 								Dom.icon_middle_click.hide();
 								Dom.font_button.removeClass('icon-middle-click');
@@ -509,7 +525,7 @@
 						Dom.night_day_switch_button.click(function() {
 							//  触发背景切换的事件
 						});
-						//字体切换
+						//字体大小切换
 						Dom.large_font.click(function() {
 							initFontSize += 1;
 							if(initFontSize > 20) {
@@ -527,6 +543,7 @@
 							Util.StorageSetter('font_size', initFontSize);
 						});
 						//背景颜色切换
+						//点击颜色图标时会有圆圈显示
 						Dom.bk_container_1.click(function() {
 							Dom.body.css('background', initBackground[0]);
 							newInitBackground =  initBackground[0];
@@ -538,6 +555,8 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.hide();
 							}
+							initCurrent = Dom.bk_container_current_1;
+							Util.StorageSetter('init_current', initCurrent);
 						});
 						Dom.bk_container_2.click(function() {
 							Dom.body.css('background', initBackground[1]);
@@ -550,6 +569,8 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.hide();
 							}
+							initCurrent = Dom.bk_container_current_2.show();
+							Util.StorageSetter('init_current', initCurrent);
 						});
 						Dom.bk_container_3.click(function() {
 							Dom.body.css('background', initBackground[2]);
@@ -562,6 +583,8 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.hide();
 							}
+							initCurrent = Dom.bk_container_current_3.show();
+							Util.StorageSetter('init_current', initCurrent);
 						});
 						Dom.bk_container_4.click(function() {
 							Dom.body.css('background', initBackground[3]);
@@ -574,6 +597,8 @@
 								Dom.bk_container_current_4.show();
 								Dom.bk_container_current_5.hide();
 							}
+							initCurrent = Dom.bk_container_current_4.show();
+							Util.StorageSetter('init_current', initCurrent);
 						});
 						Dom.bk_container_5.click(function() {
 							Dom.body.css('background', initBackground[4]);
@@ -586,8 +611,20 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.show();
 							}
+							initCurrent = Dom.bk_container_current_5.show();
+							Util.StorageSetter('init_current', initCurrent);
 						});
-
+						//夜间
+						Dom.icon_night.click(function() {
+							Dom.body.css('background', initBackground[4]);
+							newInitBackground =  initBackground[4];
+							Util.StorageSetter('back_ground', newInitBackground);
+							Dom.icon_night.removeClass('icon-night');
+							Dom.icon_night.addClass('icon-day');
+							if(Dom.icon_day.css('display') == 'none'){
+								icon_day.show();
+							}
+						});
 						//滑动页面隐藏上下边栏
 						Win.scroll(function() {
 							Dom.top_nav.hide();
