@@ -462,6 +462,7 @@
 					var Doc = $(document);
           var readerModel;
           var readerUI;
+					var count;
           var RootContainer = $('#fiction_container');
 					var bk_container_current = new Array(
 						"Dom.bk_container_current_1.css('display') == 'none'",
@@ -510,6 +511,7 @@
 						var getFictionInfo = function(callback) {
 							$.get('data/chapter.json', function(data){
 								//获得章节信息后的回调
+								//存储页面
                 Chapter_id = data.chapters[chapterId].chapter_id;
                 ChapterTotal = data.chapters.length;
 								callback && callback();
@@ -537,10 +539,11 @@
 						}
             var prevChapter = function(UIcallback) {
               Chapter_id = parseInt(Chapter_id, 10);
-              if(Chapter_id == 0){
-                return;
-              }
-              Chapter_id -= 1;
+              if(Chapter_id > 1){
+                Chapter_id -= 1;
+              }else{
+								return;
+							}
               getCurChapterContent(Chapter_id, UIcallback);
             }
             var nextChapter = function(UIcallback) {
@@ -548,7 +551,14 @@
               if(Chapter_id == ChapterTotal){
                 return;
               }
-              Chapter_id += 1;
+							/**
+							 *
+							 */
+							if(Chapter_id < count){
+								Chapter_id += 1;
+							}else{
+								return;
+							}
               getCurChapterContent(Chapter_id, UIcallback);
             }
             return {
@@ -571,7 +581,7 @@
               for(var i = 0; i < jsonObj.t.length; i++){
                 html += '<p>' + jsonObj.p[i] + '</p>';
               }
-
+							count = i;
               return html;
             }
 							return function(data){
