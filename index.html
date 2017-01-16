@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
     <!--viewport 可视区域-->
-		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 		<meta name="format-detection" content="telephone=no">
 		<link rel="stylesheet" href="css/reset.css">
 		<style type="text/css">
@@ -329,11 +329,7 @@
       <div id="fiction_chapter_title"></div>
         <!--文章内容-->
         <div id="fiction_container" class="m-read-content">
-          <h4>坚持是一种信念</h4>
-          <p>坚持是一种信念。被誉为“史家之绝唱，无韵之离骚”《史记》的作者司马迁，在遭受了腐刑之后，发愤继续撰写《史记》，最终完成了这部宏篇著作。要是他在遭受了腐刑以后就对自己失去信心，不坚持写《史记》，那么我们现在就再也看不到这本巨著，吸收不了他的思想精华。“水滴石穿，绳锯木断”，为什么对石头来说微不足道的水能把石头滴穿？柔软的绳子能把硬梆梆的木头锯断？原因在于持之以恒，在于坚持不懈。一滴水的力量虽然弱小，然而许多滴水的汇聚，持续不断地冲击石头，量变促成质变，最终把石头冲穿。同样绳子才能把木锯断。</p>
-          <p>坚持是一种信念。被誉为“史家之绝唱，无韵之离骚”《史记》的作者司马迁，在遭受了腐刑之后，发愤继续撰写《史记》，最终完成了这部宏篇著作。要是他在遭受了腐刑以后就对自己失去信心，不坚持写《史记》，那么我们现在就再也看不到这本巨著，吸收不了他的思想精华。“水滴石穿，绳锯木断”，为什么对石头来说微不足道的水能把石头滴穿？柔软的绳子能把硬梆梆的木头锯断？原因在于持之以恒，在于坚持不懈。一滴水的力量虽然弱小，然而许多滴水的汇聚，持续不断地冲击石头，量变促成质变，最终把石头冲穿。同样绳子才能把木锯断。</p>
-          <p>坚持是一种信念。被誉为“史家之绝唱，无韵之离骚”《史记》的作者司马迁，在遭受了腐刑之后，发愤继续撰写《史记》，最终完成了这部宏篇著作。要是他在遭受了腐刑以后就对自己失去信心，不坚持写《史记》，那么我们现在就再也看不到这本巨著，吸收不了他的思想精华。“水滴石穿，绳锯木断”，为什么对石头来说微不足道的水能把石头滴穿？柔软的绳子能把硬梆梆的木头锯断？原因在于持之以恒，在于坚持不懈。一滴水的力量虽然弱小，然而许多滴水的汇聚，持续不断地冲击石头，量变促成质变，最终把石头冲穿。同样绳子才能把木锯断。</p>
-          <p>坚持是一种信念。被誉为“史家之绝唱，无韵之离骚”《史记》的作者司马迁，在遭受了腐刑之后，发愤继续撰写《史记》，最终完成了这部宏篇著作。要是他在遭受了腐刑以后就对自己失去信心，不坚持写《史记》，那么我们现在就再也看不到这本巨著，吸收不了他的思想精华。“水滴石穿，绳锯木断”，为什么对石头来说微不足道的水能把石头滴穿？柔软的绳子能把硬梆梆的木头锯断？原因在于持之以恒，在于坚持不懈。一滴水的力量虽然弱小，然而许多滴水的汇聚，持续不断地冲击石头，量变促成质变，最终把石头冲穿。同样绳子才能把木锯断。</p>
+
         </div>
 
         <!--尾部按钮-->
@@ -399,13 +395,13 @@
 	      </div>
 				<!--下边栏结束-->
     </div>
-		<script src="lib/zepto.min.js"></script>
+		<script src="lib/zepto.js"></script>
 		<script>
 			window.jQuery = $;
 		</script>
 		<script src="js/jquery.base64.js"></script>
 		<script src="js/jquery.jsonp.js"></script>
-		
+
 		<script>
 		//封装
 		    (function() {
@@ -417,7 +413,20 @@
 						var StorageSetter = function(key, val) {
 							return localStorage.setItem(prefix + key, val);
 						}
+						var getJSONP = function(url, callback){
+							return $.jsonp({
+								url: url,
+								cache: true,
+								callback: 'duokan_fiction_chapter',
+								success: function(result) {
+									var data = $.base64.decode(result);
+									var json = decodeURIComponent(escape(data));
+									callback(json);
+								}
+							});
+						}
 						return {
+							getJSONP:getJSONP,
 							StorageGetter:StorageGetter,
 							StorageSetter:StorageSetter
 						}
@@ -453,6 +462,7 @@
 					}
 					var Win = $(window);
 					var Doc = $(document);
+          var RootContainer = $('#fiction_container');
 					var bk_container_current = new Array(
 						"Dom.bk_container_current_1.css('display') == 'none'",
 						"Dom.bk_container_current_2.css('display') == 'none'",
@@ -475,15 +485,62 @@
 					//主函数
 					function main() {
 						//项目的入口函数
+            var readerModel = ReaderModel();
+            var readerUI = ReaderBaseFrame(RootContainer);
+            readerModel.init(function(data) {
+              readerUI(data);
+            });
 						EventHanlder();
 					}
 
 					function ReaderModel() {
 						//实现和阅读器相关的数据交互的方法
+            var Chapter_id;
+            var init = function(UIcallback) {
+              getFictionInfo(function() {
+                getCurChapterContent(Chapter_id, function(data) {
+                  UIcallback && UIcallback(data);
+                });
+              });
+            }
+						var getFictionInfo = function(callback) {
+							$.get('data/chapter.json', function(data){
+								//获得章节信息后的回调
+                Chapter_id = data.chapters[1].chapter_id;
+								callback && callback();
+							}, 'json');
+						}
+						var getCurChapterContent = function(chapter_id, callback) {
+							$.get('data/data' + chapter_id + '.json', function(data){
+								if(data.result == 0){
+									var url = data.jsonp;
+									Util.getJSONP(url, function(data){
+                    /*
+                    if(callback){ callback() }
+                     */
+                    callback && callback(data);
+                  });
+								}
+							}, 'json');
+						}
+            return {
+              init: init
+            }
 					}
 
-					function ReaderBaseFrame() {
+					function ReaderBaseFrame(container) {
 						//渲染基本UI结构
+            function parseChapterData(jsonData) {
+              var jsonObj = JSON.parse(jsonData);
+              var html = '<h4>' + jsonObj.t + '</h4>';
+              for(var i = 0; i < jsonObj.t.length; i++){
+                html += '<p>' + jsonObj.p[i] + '</p>';
+              }
+              return html;
+            }
+            return function(data){
+              container.html(parseChapterData(data));
+            }
 					}
 
 					function EventHanlder() {
