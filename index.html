@@ -46,6 +46,7 @@
       font-size: 12px;
       background: #000;
       opacity: 0.9;
+			z-index: 21000;
     }
     .u-tab li {
       display: inline-block;
@@ -53,7 +54,9 @@
       border-right: 1px solid #858382;
       text-align: center;
       color: #fff;
+			z-index: 21000;
     }
+
     .u-tab li:nth-child(2) {
       border-right: none;
     }
@@ -335,8 +338,8 @@
         <!--尾部按钮-->
         <div class="m-button-bar">
           <ul class="u-tab">
-            <li id="prev_button">上一章</li>
-            <li id="next_button">下一章</li>
+            <li id="prev_button" class="prev-button">上一章</li>
+            <li id="next_button" class="next-button">下一章</li>
           </ul>
         </div>
         <!--下边栏-->
@@ -462,6 +465,8 @@
 					}
 					var Win = $(window);
 					var Doc = $(document);
+          var readerModel;
+          var readerUI;
           var RootContainer = $('#fiction_container');
 					var bk_container_current = new Array(
 						"Dom.bk_container_current_1.css('display') == 'none'",
@@ -485,8 +490,8 @@
 					//主函数
 					function main() {
 						//项目的入口函数
-            var readerModel = ReaderModel();
-            var readerUI = ReaderBaseFrame(RootContainer);
+            readerModel = ReaderModel();
+            readerUI = ReaderBaseFrame(RootContainer);
             readerModel.init(function(data) {
               readerUI(data);
             });
@@ -496,6 +501,7 @@
 					function ReaderModel() {
 						//实现和阅读器相关的数据交互的方法
             var Chapter_id;
+            var ChapterTotal;
             var init = function(UIcallback) {
               getFictionInfo(function() {
                 getCurChapterContent(Chapter_id, function(data) {
@@ -507,6 +513,7 @@
 							$.get('data/chapter.json', function(data){
 								//获得章节信息后的回调
                 Chapter_id = data.chapters[1].chapter_id;
+                ChapterTotal = data.chapters.length;
 								callback && callback();
 							}, 'json');
 						}
@@ -523,8 +530,26 @@
 								}
 							}, 'json');
 						}
+            var prevChapter = function(UIcallback) {
+              Chapter_id = parseInt(Chapter_id, 10);
+              if(Chapter_id == 0){
+                return;
+              }
+              Chapter_id -= 1;
+              getCurChapterContent(Chapter_id, UIcallback);
+            }
+            var nextChapter = function(UIcallback) {
+              Chapter_id = parseInt(Chapter_id, 10);
+              if(Chapter_id == ChapterTotal){
+                return;
+              }
+              Chapter_id += 1;
+              getCurChapterContent(Chapter_id, UIcallback);
+            }
             return {
-              init: init
+              init: init,
+              prevChapter: prevChapter,
+              nextChapter: nextChapter
             }
 					}
 
@@ -550,6 +575,7 @@
 							if(Dom.top_nav.css('display') == 'none'){
 								Dom.top_nav.show();
 								Dom.foot_nav.show();
+                Dom.font_container.hide();
 								if(newInitBackground === initBackground[4]){
 									Dom.icon_right_day.show();
 									Dom.icon_right_night.hide();
@@ -560,6 +586,8 @@
 							}else{
 								Dom.top_nav.hide();
 								Dom.foot_nav.hide();
+								Dom.icon_middle_click.hide();
+								Dom.icon_middle.show();
 							}
 						});
 						//点击字体后颜色切换且显示菜单
@@ -733,9 +761,21 @@
 						Win.scroll(function() {
 							Dom.top_nav.hide();
 							Dom.foot_nav.hide();
+							Dom.icon_middle.show();
 							Dom.icon_middle_click.hide();
-							Dom.font_container.hide();
 						});
+
+            $('#prev_button').click(function(){
+              //获得章节的翻页数据 -> 把数据拿出来做渲染
+              readerModel.prevChapter(function(data){
+                readerUI(data);
+              });
+            });
+            $('#next_button').click(function(){
+              readerModel.nextChapter(function(data){
+                readerUI(data);
+              });
+            });
 					}
 
 					main();
