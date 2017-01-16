@@ -405,7 +405,7 @@
 		</script>
 		<script src="js/jquery.base64.js"></script>
 		<script src="js/jquery.jsonp.js"></script>
-
+		
 		<script>
 		//封装
 		    (function() {
@@ -460,7 +460,6 @@
 						"Dom.bk_container_current_4.css('display') == 'none'",
 						"Dom.bk_container_current_5.css('display') == 'none'"
 					);
-
 					//保存上次设置字体的大小
 					var initFontSize = Util.StorageGetter('font_size');
 					initFontSize = parseInt(initFontSize);
@@ -473,9 +472,6 @@
 					//保存上次设置的背景颜色
 					var newInitBackground = Util.StorageGetter('back_ground');
 					Dom.body.css('background', newInitBackground);
-
-					var initCurrent = Util.StorageGetter('init_current');
-
 					//主函数
 					function main() {
 						//项目的入口函数
@@ -497,6 +493,13 @@
 							if(Dom.top_nav.css('display') == 'none'){
 								Dom.top_nav.show();
 								Dom.foot_nav.show();
+								if(newInitBackground === initBackground[4]){
+									Dom.icon_right_day.show();
+									Dom.icon_right_night.hide();
+								}else if(newInitBackground === initBackground[0]){
+									Dom.icon_right_day.hide();
+									Dom.icon_right_night.show();
+								}
 							}else{
 								Dom.top_nav.hide();
 								Dom.foot_nav.hide();
@@ -533,7 +536,6 @@
 								Dom.font_container.hide();
 							}
 						});
-
 						Dom.night_day_switch_button.click(function() {
 							//  触发背景切换的事件
 						});
@@ -567,8 +569,6 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.hide();
 							}
-							initCurrent = Dom.bk_container_current_1;
-							Util.StorageSetter('init_current', initCurrent);
 							if(Dom.icon_right_night.css('display') == 'none'){
 								Dom.icon_right_night.show();
 								Dom.icon_right_day.hide();
@@ -585,8 +585,6 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.hide();
 							}
-							initCurrent = Dom.bk_container_current_2.show();
-							Util.StorageSetter('init_current', initCurrent);
 							if(Dom.icon_right_night.css('display') == 'none'){
 								Dom.icon_right_night.show();
 								Dom.icon_right_day.hide();
@@ -603,8 +601,6 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.hide();
 							}
-							initCurrent = Dom.bk_container_current_3.show();
-							Util.StorageSetter('init_current', initCurrent);
 							if(Dom.icon_right_night.css('display') == 'none'){
 								Dom.icon_right_night.show();
 								Dom.icon_right_day.hide();
@@ -621,8 +617,6 @@
 								Dom.bk_container_current_4.show();
 								Dom.bk_container_current_5.hide();
 							}
-							initCurrent = Dom.bk_container_current_4.show();
-							Util.StorageSetter('init_current', initCurrent);
 							if(Dom.icon_right_night.css('display') == 'none'){
 								Dom.icon_right_night.show();
 								Dom.icon_right_day.hide();
@@ -639,8 +633,6 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.show();
 							}
-							initCurrent = Dom.bk_container_current_5.show();
-							Util.StorageSetter('init_current', initCurrent);
 							if(Dom.icon_right_day.css('display') == 'none'){
 								Dom.icon_right_day.show();
 								Dom.icon_right_night.hide();
@@ -662,8 +654,6 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.show();
 							}
-							initCurrent = Dom.bk_container_current_5.show();
-							Util.StorageSetter('init_current', initCurrent);
 						});
 						//白天
 						Dom.icon_right_day.click(function() {
@@ -681,8 +671,6 @@
 								Dom.bk_container_current_4.hide();
 								Dom.bk_container_current_5.hide();
 							}
-							initCurrent = Dom.bk_container_current_1.show();
-							Util.StorageSetter('init_current', initCurrent);
 						});
 						//滑动页面隐藏上下边栏
 						Win.scroll(function() {
@@ -690,7 +678,6 @@
 							Dom.foot_nav.hide();
 							Dom.icon_middle_click.hide();
 							Dom.font_container.hide();
-
 						});
 					}
 
