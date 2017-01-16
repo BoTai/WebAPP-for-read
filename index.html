@@ -512,6 +512,9 @@
 							$.get('data/chapter.json', function(data){
 								//获得章节信息后的回调
 								//存储页面
+								if(chapterId == null){
+									chapterId = 1;
+								}
                 Chapter_id = data.chapters[chapterId].chapter_id;
                 ChapterTotal = data.chapters.length;
 								callback && callback();
