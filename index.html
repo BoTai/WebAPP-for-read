@@ -63,7 +63,7 @@
       max-width: 800px;
       padding: 5px;
       margin: 0 auto;
-			z-index: 99999;
+			z-index: 10002;
 			position: relative;
     }
     .top-nav {
@@ -71,7 +71,7 @@
       top: 0px;
       height: 50px;
       width: 100%;
-      z-index: 9999;
+      z-index: 10003;
       background: #000;
     }
     .icon-back {
@@ -94,7 +94,7 @@
       bottom: 0px;
       height: 80px;
       width: 100%;
-      z-index: 9999;
+      z-index: 10003;
       background: #000;
 			opacity: 0.9;
     }
@@ -482,6 +482,9 @@
 					//保存上次设置的背景颜色
 					var newInitBackground = Util.StorageGetter('back_ground');
 					Dom.body.css('background', newInitBackground);
+
+					var initData = Util.StorageGetter('init_data');
+					var chapterId = Util.StorageGetter('chapter_Id');
 					//主函数
 					function main() {
 						//项目的入口函数
@@ -507,13 +510,20 @@
 						var getFictionInfo = function(callback) {
 							$.get('data/chapter.json', function(data){
 								//获得章节信息后的回调
-                Chapter_id = data.chapters[1].chapter_id;
+                Chapter_id = data.chapters[chapterId].chapter_id;
                 ChapterTotal = data.chapters.length;
 								callback && callback();
 							}, 'json');
 						}
 						var getCurChapterContent = function(chapter_id, callback) {
 							$.get('data/data' + chapter_id + '.json', function(data){
+								/**
+								 * [result description]
+								 *
+								 */
+								chapterId = chapter_id;
+								Util.StorageSetter('chapter_Id', chapterId);
+
 								if(data.result == 0){
 									var url = data.jsonp;
 									Util.getJSONP(url, function(data){
@@ -551,16 +561,22 @@
 					function ReaderBaseFrame(container) {
 						//渲染基本UI结构
             function parseChapterData(jsonData) {
+							/**
+							 * [json description]
+							 *
+							 */
+
               var jsonObj = JSON.parse(jsonData);
               var html = '<h4>' + jsonObj.t + '</h4>';
               for(var i = 0; i < jsonObj.t.length; i++){
                 html += '<p>' + jsonObj.p[i] + '</p>';
               }
+
               return html;
             }
-            return function(data){
-              container.html(parseChapterData(data));
-            }
+							return function(data){
+	              container.html(parseChapterData(data));
+	            }
 					}
 
 					function EventHanlder() {
@@ -764,11 +780,15 @@
               //获得章节的翻页数据 -> 把数据拿出来做渲染
               readerModel.prevChapter(function(data){
                 readerUI(data);
+								initData = data;
+								Util.StorageSetter('init_data', initData);
               });
             });
             $('#next_button').click(function(){
               readerModel.nextChapter(function(data){
                 readerUI(data);
+								initData = data;
+								Util.StorageSetter('init_data', initData);
               });
             });
 					}
