@@ -5,8 +5,5 @@ HTML5、zepto库 开发webApp静态界面阅读器
 <ul>
   <li>前端交互。</li>
   <li>数据交互</li>
-  <li></li>
-  <li></li>
-  <li></li>
 </ul>
 <hr>
