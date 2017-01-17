@@ -403,6 +403,7 @@
 		<script>
 		//封装
 		    (function() {
+					'use strict';
 					var Util = (function() {
 						var prefix = 'html5_reader_'
 						var StorageGetter = function(key) {
@@ -502,11 +503,18 @@
             var Chapter_id;
             var ChapterTotal;
             var init = function(UIcallback) {
+							/*
               getFictionInfo(function() {
                 getCurChapterContent(Chapter_id, function(data) {
                   UIcallback && UIcallback(data);
                 });
               });
+							*/
+						getFictionInfoPromise().then(function(d){
+							return getCurChapterContentPromise();
+						}).then(function(data) {
+							UIcallback && UIcallback(data);
+						});
             }
 						var getFictionInfo = function(callback) {
 							$.get('data/chapter.json', function(data){
@@ -520,8 +528,30 @@
 								callback && callback();
 							}, 'json');
 						}
+						/**
+						 * [getFictionInfoPromise description]
+						 * ES6 Promise对象
+						 */
+						var getFictionInfoPromise = function(){
+							return new Promise(function(resolve, reject){
+							$.get('data/chapter.json', function(data){
+								//获得章节信息后的回调
+								//存储页面
+								if(data.result == 0){
+								  if(chapterId == null){
+									  chapterId = 1;
+								  }
+                  Chapter_id = data.chapters[chapterId].chapter_id;
+                  ChapterTotal = data.chapters.length;
+								  resolve();
+								}else {
+									reject();
+								}
+							}, 'json');
+						});
+					}
 						var getCurChapterContent = function(chapter_id, callback) {
-							$.get('data/data' + chapter_id + '.json', function(data){
+							$.get('data/data' + Chapter_id + '.json', function(data){
 								/**
 								 * [result description]
 								 *
@@ -540,6 +570,24 @@
 								}
 							}, 'json');
 						}
+
+						var getCurChapterContentPromise = function(){
+							return new Promise(function(resolve, reject){
+							  $.get('data/data' + Chapter_id + '.json', function(data){
+								  chapterId = Chapter_id;
+								  Util.StorageSetter('chapter_Id', chapterId);
+								  if(data.result == 0){
+									  var url = data.jsonp;
+									  Util.getJSONP(url, function(data){
+										  resolve(data);
+                    });
+								  }else{
+									  eject({msg: 'fail'});
+								  }
+							  }, 'json');
+							});
+					}
+
             var prevChapter = function(UIcallback) {
               Chapter_id = parseInt(Chapter_id, 10);
               if(Chapter_id > 1){
