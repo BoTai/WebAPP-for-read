@@ -1,5 +1,5 @@
 # mobile-web-read
-HTML5、Vue.js、zepto、Koa框架综合运用开发webApp阅读器
+HTML5、zepto库 开发webApp静态界面阅读器
 <br/>
 <h4>-已实现:</h4>
 <ul>
@@ -10,4 +10,3 @@ HTML5、Vue.js、zepto、Koa框架综合运用开发webApp阅读器
   <li></li>
 </ul>
 <hr>
-未完待续...
